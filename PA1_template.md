@@ -42,6 +42,13 @@ For this part of the assignment, you can ignore the missing values in the datase
 
 2. Calculate and report the mean and median total number of steps taken per day.
 
+
+```r
+## Calculate and report the mean and median total number of steps taken per day
+  origmean <- mean(sumSteps$Steps)
+  origmed <- median(sumSteps$Steps)
+```
+
 The mean number of steps per day is 9354.2295082.
 
 The median number of steps per day is 10395.
@@ -64,7 +71,7 @@ What is the average daily activity pattern?
 		axis(1, at=c(seq(from=0,to=2500,by=100)))
 ```
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
 
 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
@@ -72,6 +79,9 @@ What is the average daily activity pattern?
 ```r
 ## Identify the row with the maximum number of steps.
   maxrow <- which.max(meanSteps[,2] )
+
+## Return the Interval value in the identified max row.
+  meanSteps[maxrow,][,1]
 ```
 
 835 is the interval with the maximum number of steps.
@@ -132,9 +142,20 @@ sum(is.na(data$steps))
   hist(sumnewSteps$Steps, main = "Total Steps per Day", xlab = "Steps per Day", ylab = "Count of Days", col = "blue")
 ```
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png) 
 
 4. (b) Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
+
+
+```r
+## Calculate and report the new mean and median total number of steps taken per day.
+  newmean <- mean(sumnewSteps$Steps)
+  newmed <- median(sumnewSteps$Steps)
+
+## Calculate difference from original mean and median.
+  MeanDif <- origmean - newmean
+  MedDif <- origmed - newmed
+```
 
 The imputed mean number of steps per day is 9503.8688525.  That is a difference of -149.6393443.
 
@@ -175,5 +196,5 @@ For this part the weekdays() function may be of some help here. Use the dataset 
 	p + facet_grid(Group~.) + labs(title = "Average Steps per Interval and Date Type", x = "Interval", y = "Average Number of Steps") 
 ```
 
-![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png) 
+![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png) 
 

@@ -38,6 +38,12 @@ For this part of the assignment, you can ignore the missing values in the datase
 
 2. Calculate and report the mean and median total number of steps taken per day.
 
+```{r results='hide'}
+## Calculate and report the mean and median total number of steps taken per day
+  origmean <- mean(sumSteps$Steps)
+  origmed <- median(sumSteps$Steps)
+```
+
 The mean number of steps per day is `r mean(sumSteps$Steps)`.
 
 The median number of steps per day is `r median(sumSteps$Steps)`.
@@ -61,9 +67,12 @@ What is the average daily activity pattern?
 
 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
-```{r}
+```{r results='hide'}
 ## Identify the row with the maximum number of steps.
   maxrow <- which.max(meanSteps[,2] )
+
+## Return the Interval value in the identified max row.
+  meanSteps[maxrow,][,1]
 ```
 
 `r meanSteps[maxrow,][,1]` is the interval with the maximum number of steps.
@@ -117,6 +126,16 @@ sum(is.na(data$steps))
 ```
 
 4. (b) Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
+
+```{r results='hide'}
+## Calculate and report the new mean and median total number of steps taken per day.
+  newmean <- mean(sumnewSteps$Steps)
+  newmed <- median(sumnewSteps$Steps)
+
+## Calculate difference from original mean and median.
+  MeanDif <- origmean - newmean
+  MedDif <- origmed - newmed
+```
 
 The imputed mean number of steps per day is `r mean(sumnewSteps$Steps)`.  That is a difference of `r mean(sumSteps$Steps)-mean(sumnewSteps$Steps)`.
 
