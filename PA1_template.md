@@ -12,7 +12,8 @@ Show any code that is needed to:
 1. Load the data (i.e. read.csv())
 2. Process/transform the data (if necessary) into a format suitable for your analysis
 
-```{r}
+
+```r
 ## Read in data.  
   data <- read.csv("activity.csv")
 
@@ -27,7 +28,8 @@ What is the mean total number of steps taken per day?
 For this part of the assignment, you can ignore the missing values in the dataset.
 
 1. Make a histogram of the total number of steps taken each day.
-```{r}
+
+```r
 ## Sum total steps by day.
   sumSteps <- aggregate(data$steps, by=list(data$date), FUN=sum, na.rm=TRUE)
     names(sumSteps) <- c("Day","Steps")
@@ -36,11 +38,13 @@ For this part of the assignment, you can ignore the missing values in the datase
   hist(sumSteps$Steps, main = "Total Steps per Day", xlab = "Steps per Day", ylab = "Count of Days", col = "green")
 ```
 
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png) 
+
 2. Calculate and report the mean and median total number of steps taken per day.
 
-The mean number of steps per day is `r mean(sumSteps$Steps)`.
+The mean number of steps per day is 9354.2295082.
 
-The median number of steps per day is `r median(sumSteps$Steps)`.
+The median number of steps per day is 10395.
 
 ---
 
@@ -49,7 +53,8 @@ What is the average daily activity pattern?
 
 1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis).
 
-```{r}
+
+```r
 ## Calculate means.
   meanSteps <- aggregate(data$steps, by=list(data$interval), FUN=mean, na.rm=TRUE)
     names(meanSteps) <- c("Interval","AvgSteps")
@@ -59,14 +64,17 @@ What is the average daily activity pattern?
 		axis(1, at=c(seq(from=0,to=2500,by=100)))
 ```
 
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
+
 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
-```{r}
+
+```r
 ## Identify the row with the maximum number of steps.
   maxrow <- which.max(meanSteps[,2] )
 ```
 
-`r meanSteps[maxrow,][,1]` is the interval with the maximum number of steps.
+835 is the interval with the maximum number of steps.
 
 ---
 
@@ -77,13 +85,19 @@ Note that there are a number of days/intervals where there are missing values (c
 
 1. Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 
-```{r}
+
+```r
 sum(is.na(data$steps))
+```
+
+```
+## [1] 2304
 ```
 
 2. Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
 
-```{r}
+
+```r
 ## Calculate the median number of steps for each interval.
   medInt <- aggregate(data$steps, by=list(data$interval), FUN=median, na.rm=TRUE)
     names(medInt) <- c("interval","steps")
@@ -100,14 +114,16 @@ sum(is.na(data$steps))
 
 3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
 
-```{r}
+
+```r
 ## Combine corrected NA rows with original non-NA rows.
   CorData <- rbind(subNA3,subOK)
 ```
 
 4. (a) Make a histogram of the total number of steps taken each day 
 
-```{r}
+
+```r
 ## Sum total steps by day.
   sumnewSteps <- aggregate(CorData$steps, by=list(CorData$date), FUN=sum, na.rm=TRUE)
     names(sumnewSteps) <- c("Day","Steps")
@@ -116,11 +132,13 @@ sum(is.na(data$steps))
   hist(sumnewSteps$Steps, main = "Total Steps per Day", xlab = "Steps per Day", ylab = "Count of Days", col = "blue")
 ```
 
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
+
 4. (b) Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
-The imputed mean number of steps per day is `r mean(sumnewSteps$Steps)`.  That is a difference of `r mean(sumSteps$Steps)-mean(sumnewSteps$Steps)`.
+The imputed mean number of steps per day is 9503.8688525.  That is a difference of -149.6393443.
 
-The imputed median number of steps per day is `r median(sumnewSteps$Steps)`.  That is a difference of `r median(sumSteps$Steps)-median(sumnewSteps$Steps)`.
+The imputed median number of steps per day is 10395.  That is a difference of 0.
 
 There is minimal impact from imputing the missing data on the estimates of total daily steps.
 
@@ -133,7 +151,8 @@ For this part the weekdays() function may be of some help here. Use the dataset 
 
 1. Create a new factor variable in the dataset with two levels -- "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 
-```{r}
+
+```r
 ## Add weekdays to the CorData table
   CorData$day <-weekdays(CorData$date)
 	
@@ -144,7 +163,8 @@ For this part the weekdays() function may be of some help here. Use the dataset 
 
 2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). 
 
-```{r}
+
+```r
 ## Calculate the average steps by weekday/weekend.
   avgSteps <- aggregate(CorData$steps, by=list(CorData$interval, CorData$DateType), FUN=mean, na.rm=TRUE)
     names(avgSteps) <- c("Interval","Group","AvgSteps")
@@ -154,4 +174,6 @@ For this part the weekdays() function may be of some help here. Use the dataset 
   p <- qplot(Interval, AvgSteps, data = avgSteps, geom = "line")
 	p + facet_grid(Group~.) + labs(title = "Average Steps per Interval and Date Type", x = "Interval", y = "Average Number of Steps") 
 ```
+
+![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png) 
 
